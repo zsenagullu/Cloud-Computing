@@ -9,47 +9,6 @@ The architecture is deployed across two Availability Zones (AZs) within a single
 ### Design Screenshot
 ![Design Screenshot](tasarım.jpeg)
 
-```mermaid
-graph TD
-    User([User]) --> R53[Amazon Route 53]
-    R53 --> WAF[AWS WAF]
-    WAF --> CF[Amazon CloudFront]
-    CF --> IGW[Internet Gateway]
-
-    subgraph VPC [VPC: 10.0.0.0/16]
-        IGW --> Pub1a[Public Subnet 1a]
-        IGW --> Pub1b[Public Subnet 1b]
-
-        subgraph "Public Tier"
-            Pub1a --> NAT1a[NAT Gateway]
-            Pub1b --> NAT1b[NAT Gateway]
-            ALB[Application Load Balancer]
-        end
-
-        Pub1a -.-> ALB
-        Pub1b -.-> ALB
-
-        subgraph "Application Tier (ASG)"
-            ALB --> EC2_1a[EC2 Instance PHP 8.3]
-            ALB --> EC2_1b[EC2 Instance PHP 8.3]
-        end
-
-        subgraph "Data Tier"
-            EC2_1a --> RDS[Amazon RDS]
-            EC2_1b --> RDS
-            EC2_1a --> Elastic[ElastiCache]
-            EC2_1b --> Elastic
-            EC2_1a --> EFS[Amazon EFS]
-            EC2_1b --> EFS
-        end
-    end
-
-    DataBackup[Daily Backup] --- RDS
-    DataBackup --- EFS
-```
-
-> [!NOTE]
-> The original `architecture-diagram.png` is a Draw.io XML file. To see it as a rendered image on GitHub, you can export it as a PNG/JPG from [diagrams.net](https://app.diagrams.net/) and overwrite the file. In the meantime, the Mermaid diagram above provides a native visual representation.
 
 ### 🛰 Networking & Connectivity
 - **VPC (10.0.0.0/16):** The base network for all resources.
