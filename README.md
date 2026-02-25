@@ -6,6 +6,9 @@ This project showcases a highly available, scalable, and secure 3-tier web archi
 
 The architecture is deployed across two Availability Zones (AZs) within a single VPC for redundancy and fault tolerance.
 
+### Design Screenshot
+![Design Screenshot](tasarım.jpeg)
+
 ```mermaid
 graph TD
     User([User]) --> R53[Amazon Route 53]
